@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Determine Weather{% endblock %}
+
+{% block header %}Determine Weather{% endblock header%}
+
+{% block leftbar %}
+    <h3>How it works</h3>
+    <p>This is a basic weather detection project which uses OpenCV and the
+        Python programming language to determine the weather condition by analysing an image. The techniques to do this
+        include edge detection, thresholding, colour analysis, etc.
+    </p>
+{% endblock leftbar %}
+
+{% block rightbar %}
+    <h3>Results</h3>
+    <hr>
+    <h4 class="bg-info"> {{weather}}</h4>
+{% endblock rightbar %}
+
+{% block form %}
+    <form role="form"  id="upload-form" action="{{ url_for('upload_weather')}}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="btn btn-default btn-file">
+                Browse <input type="file"  id="file1" name="file1" accept="image/*" multiple style="display: none;">
+            </label>
+            <button id="subButton" type="submit" class="btn btn-default" value="send">Determine Weather</button>
+        </div>
+    </form>
+{% endblock form %}

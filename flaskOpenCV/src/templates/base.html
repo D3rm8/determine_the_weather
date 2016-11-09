@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block title %}{% endblock title%}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0px;
+    }
+
+    .container {
+        height: 95%;
+    }
+
+    #topbar{
+    width:100%;
+    //vertical-align: middle;
+    //border-radius: 25px;
+    //background: #f2f2f2;
+    }
+
+    #form_div{
+    //width:100%;
+    //align: center;
+    //margin-left: auto ;
+    //margin-right: auto ;
+    //border-radius: 5px;
+    border-top: 1px solid #f2f2f2;
+    }
+
+    .img-responsive {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    }
+
+    .col-md-6 {
+    border-left: 1px solid #f2f2f2;
+    border-right: 1px solid #f2f2f2;
+    }
+
+  </style>
+
+</head>
+<body onload="mymessage()">
+<!-- START NAVIGATION HEADER -->
+    <<!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+        <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">WebSiteName</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="{{ url_for('home') }}">Home</a></li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Projects <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url_for('face_detection') }}">Face Detection</a></li>
+                    <li><a href="{{ url_for('weather_detection') }}">Weather Detection</a></li>
+                </ul>
+            </li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- END NAVIGATION HEADER -->
+
+<!-- Page Content -->
+    <div class="container">
+
+        <!-- Portfolio Item Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header" align="center">
+                    {% block header %}{% endblock header%}
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Portfolio Item Row -->
+        <div class="row">
+            <div class="col-md-3">
+                {% block leftbar %}{% endblock leftbar %}
+            </div>
+
+            <div class="col-md-6" style="height:450px">
+                <div class="container" id="topbar">
+                    <img id="img1" class="img-responsive" src="">
+                    {% for image_name in image_names %}
+                        <img class="img-responsive" id="imgDetected" src="{{url_for('send_image', filename=image_name)}}">
+                    {% endfor %}
+                </div>
+                <div id="form_div" align="center">
+                <h3>Select Image</h3>
+                    {% block form %}{% endblock form %}
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                {% block rightbar %}{% endblock rightbar %}
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.2.min.js"></script>
+    <script>
+    $(document).ready(function()
+    {
+        $("#img1").hide();
+        $("#subButton").hide();
+
+        $("#file1").change(function ()
+        {
+            showImage(this);
+        });
+
+        function showImage(input)
+        {
+            var reader  = new FileReader();
+            reader.onload = function (e)
+            {
+                $('#img1').attr('src', e.target.result);
+            }
+            if (input.files.length > 0)
+            {
+                reader.readAsDataURL(input.files[0]);
+                $("#img1").show();
+                $("#subButton").show();
+                $("#imgDetected").hide();
+            }
+            else
+            {
+                alert("No File Detected...")
+            }
+        }
+    });
+    </script>
+</body>
+</html>
